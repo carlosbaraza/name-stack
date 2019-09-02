@@ -29,6 +29,7 @@ export default class MyApp extends App {
               color: #333;
               font-family: "Open Sans", Helvetica, sans-serif;
               box-sizing: border-box;
+              background: #222;
             }
           `}
         </style>

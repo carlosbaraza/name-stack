@@ -8,6 +8,7 @@
   justify-content: center;
   background: $color-dark;
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .container {
@@ -33,7 +34,7 @@
 
 .formContainer {
   display: flex;
-  padding: 0 40px;
+  padding: 40px;
   flex-grow: 1;
   flex-direction: column;
   justify-content: center;
