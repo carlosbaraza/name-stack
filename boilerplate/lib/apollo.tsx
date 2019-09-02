@@ -49,7 +49,6 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
 
         // Run all GraphQL queries in the component tree
         // and extract the resulting data
-        console.log(req);
         const apolloClient = initApolloClient({}, req.headers.cookie);
 
         try {

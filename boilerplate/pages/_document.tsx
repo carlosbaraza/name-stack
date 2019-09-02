@@ -3,6 +3,7 @@
 
 // ./pages/_document.js
 import Document, { Html, Head, Main, NextScript } from "next/document";
+import { FIREBASE_CLIENTSIDE_CONFIG } from "../server/constants";
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -17,6 +18,13 @@ class MyDocument extends Document {
           <link
             href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800&display=swap"
             rel="stylesheet"
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.firebaseConfig = ${FIREBASE_CLIENTSIDE_CONFIG};
+              `
+            }}
           />
         </Head>
         <body>

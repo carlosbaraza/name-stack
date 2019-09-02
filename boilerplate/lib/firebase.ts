@@ -1,18 +1,11 @@
 import * as firebase from "firebase/app";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCNerW1NP0C5BSasnu1dlJRghOD5dMszPk",
-  authDomain: "wisertag.firebaseapp.com",
-  databaseURL: "https://wisertag.firebaseio.com",
-  projectId: "wisertag",
-  storageBucket: "",
-  messagingSenderId: "330692634608",
-  appId: "1:330692634608:web:b43d856cb6845553"
-};
+import { isBrowser } from "./config";
 
 if (!firebase.apps[0]) {
   // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(
+    isBrowser ? (window as any).firebaseConfig : JSON.parse(process.env.FIREBASE_CLIENTSIDE_CONFIG)
+  );
 }
 
 const DEFAULT_ERROR_MESSAGE =
