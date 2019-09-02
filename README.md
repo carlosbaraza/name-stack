@@ -8,27 +8,17 @@ Medium post.
 
 # Getting started
 
-## Clone boilerplate
+## 1. Clone boilerplate
 
 Clone the [boilerplate](./boilerplate) folter in this repository and then run:
 
-## Install dependencies
+## 2. Install dependencies
 
 ```sh
 npm i
 ```
 
-## Run development server
-
-```sh
-# Start mongod
-docker-compose up
-
-# Start Next server
-npm run dev
-```
-
-## Set up Firebase
+## 3. Set up Firebase
 
 This project uses Firebase to simplify the user management.
 
@@ -43,6 +33,16 @@ FIREBASE_CLIENT_EMAIL=firebase-adminsdk-blablah@project.iam.gserviceaccount.com
 
 # JSON.stringify(firebaseConfig)
 FIREBASE_CLIENTSIDE_CONFIG=firebaseConfigJSON
+```
+
+## 4. Run development server
+
+```sh
+# Start mongod
+docker-compose up
+
+# Start Next server
+npm run dev
 ```
 
 # Ideal stack for web development speed (without compromises)
