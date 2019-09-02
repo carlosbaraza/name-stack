@@ -1,8 +1,13 @@
 import React, { Component, FormEvent } from "react";
 import Link from "next/link";
 import Router from "next/router";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 import styles from "./login.scss";
+import { signIn } from "../lib/firebase";
+const DEFAULT_ERROR_MESSAGE =
+  "Something went wrong. If the problem persists, please get in touch with us.";
 
 export default class AuthPageLogIn extends Component {
   emailEl = null;
@@ -14,31 +19,14 @@ export default class AuthPageLogIn extends Component {
   onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new URLSearchParams();
-    formData.append("email", this.emailEl.value);
-    formData.append("password", this.passwordEl.value);
+    const email = this.emailEl.value;
+    const password = this.passwordEl.value;
 
-    const response = await fetch("http://localhost:3000/api/v1/users/login", {
-      method: "POST",
-      body: formData,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      }
-    });
-
-    if (response.status === 200) {
-      this.setState({ error: null });
-      const user = await response.json();
-      Router.push("/");
-    } else if (response.status === 400) {
-      this.setState({ error: "Some information is missing" });
-    } else if (response.status === 401) {
-      this.setState({ error: "The email or password don't match our records" });
-    } else {
-      this.setState({
-        error:
-          "Oops, something went wrong. If you continue having issues, please let us know at support@wisertag.com, and we'll jump into it to unblock you."
-      });
+    try {
+      await signIn(email, password);
+      window.location.assign("/");
+    } catch (e) {
+      this.setState({ error: e.message || DEFAULT_ERROR_MESSAGE });
     }
   };
 
@@ -50,65 +38,60 @@ export default class AuthPageLogIn extends Component {
             <object data="/static/images/login-artwork-mobile.svg" type="image/svg+xml" />
           </div>
           <span className={styles.formContainer}>
-            <div className="at-form">
-              <h3 className="at-title">Log in</h3>
+            <h3 className={styles.formTitle}>Log in</h3>
+
+            <form
+              onSubmit={this.onSubmit}
+              role="form"
+              noValidate
+              action="#"
+              method="POST"
+              className={styles.form}
+            >
               {this.state.error && <div className={styles.error}>{this.state.error}</div>}
 
-              <div className="at-pwd-form">
-                <form
-                  onSubmit={this.onSubmit}
-                  role="form"
-                  id="at-pwd-form"
-                  noValidate
-                  action="#"
-                  method="POST"
-                >
-                  <div className="at-input">
-                    <label htmlFor="email">Email</label>
+              <div className={styles.formInput}>
+                <label htmlFor="login_username">Email</label>
 
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      placeholder="Email"
-                      autoCapitalize="none"
-                      autoCorrect="off"
-                      autoComplete="off"
-                      ref={el => (this.emailEl = el)}
-                    />
-                  </div>
-
-                  <div className="at-input">
-                    <label htmlFor="password">Password</label>
-
-                    <input
-                      type="password"
-                      id="password"
-                      name="password"
-                      placeholder="Password"
-                      autoCapitalize="none"
-                      autoCorrect="off"
-                      autoComplete="off"
-                      ref={el => (this.passwordEl = el)}
-                    />
-                  </div>
-
-                  <button type="submit" className="at-btn submit" id="at-btn">
-                    Log in
-                  </button>
-                </form>
+                <input
+                  type="email"
+                  id="login_username"
+                  name="login_username"
+                  placeholder="Email"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  autoComplete="off"
+                  ref={el => (this.emailEl = el)}
+                />
               </div>
 
-              <div className="at-signin-link">
-                <p>
-                  New to Wisertag?{" "}
-                  <Link href="/signup">
-                    <a id="at-signUp" className="at-link at-signup">
-                      Sign up now
-                    </a>
-                  </Link>
-                </p>
+              <div className={styles.formInput}>
+                <label htmlFor="login_password">Password</label>
+
+                <input
+                  type="password"
+                  id="login_password"
+                  name="login_password"
+                  placeholder="Password"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  autoComplete="off"
+                  ref={el => (this.passwordEl = el)}
+                />
               </div>
+
+              <button type="submit" className={styles.formSubmit}>
+                Log in
+              </button>
+            </form>
+
+            <div className={styles.formFooter}>
+              <p>
+                Don't have an account?{" "}
+                <Link href="/signup">
+                  <a>Sign up now</a>
+                </Link>
+              </p>
             </div>
           </span>
           <object

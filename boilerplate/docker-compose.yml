@@ -6,6 +6,6 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - mongo:/data/db
+      - mongo:/data/db:delegated
 volumes:
   mongo:

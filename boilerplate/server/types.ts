@@ -1,6 +1,16 @@
 import { Request } from "express";
-import { IUser } from "./api/users/user-model";
+import * as admin from "firebase-admin";
 
-export interface RequestWithUser extends Request {
-  user: IUser;
+export interface Claims extends admin.auth.DecodedIdToken {
+  role?: string;
+}
+
+export interface Request extends Request {
+  claims: Claims;
+}
+
+export interface User extends admin.auth.UserRecord {
+  customClaims?: {
+    role: string;
+  };
 }

@@ -6,5 +6,9 @@ export default () => (
     <div>Logged in</div>
 
     <Link href="/generator">Go to generator</Link>
+
+    <div>
+      <a href="/logout">Log out</a>
+    </div>
   </div>
 );

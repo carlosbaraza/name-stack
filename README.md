@@ -60,6 +60,25 @@ After some research and experimentation, I have settled with:
 - Deployment: [Dokku](https://github.com/dokku/dokku). Open-source Docker-based PaaS. For just \$10 you can set up your own Heroku-like PaaS in a droplet, and incubate all your side projects until one generates any money. Then you could transition to a more scalable solution if you need to.
 - Headless CMS: This is an improvement I am considering if I ever have to create a project that needs to be maintained by non-technical people. [Strapi](https://strapi.io/) is a great open-source headless CMS, and it could accelerate development because you would spend less time writing APIs and CMS like functionality into your app.
 
+## User management
+
+I chose to use an Authentication as a Service provider. Concretely, I chose Firebase
+for the following reasons:
+
+- Free (for now at least)
+- Sends messages to verify email and reset password
+- Centralized and I could use it easily in other services
+- JWT, refresh token and sessions integrated
+- Allows custom claims in the JWT (e.g adding role to user)
+
+### Using PassportJS and custom User model
+
+Check out the code at [docs/using-passportjs](./docs/using-passportjs). That folder
+includes some of the implementation for PassportJS and a custom User model.
+
+You might need to adapt this code to make it work, but it should serve as a good reference
+point on implementing such thing in NextJS.
+
 ## What could be improved?
 
 - Simple getting started tools. My reference is Meteor, because I think they did a great job decrease time to launch and prototyping. However, at the time of writing the NAME stack requires quite a bit of configuration.

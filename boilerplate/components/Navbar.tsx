@@ -1,6 +1,7 @@
 import * as React from "react";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
+import firebase from "firebase/app";
 
 export const USER_QUERY = gql`
   query currentUser {
@@ -9,6 +10,10 @@ export const USER_QUERY = gql`
     }
   }
 `;
+
+function signOut() {
+  firebase.auth().signOut();
+}
 
 export function Navbar() {
   const { loading, error, data, fetchMore, networkStatus } = useQuery(USER_QUERY, {

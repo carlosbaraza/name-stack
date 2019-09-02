@@ -29,76 +29,78 @@
     flex-basis: max-content;
     width: 1000px;
   }
-
-  :global {
-    .at-form {
-      flex-grow: 1;
-    }
-
-    .at-title {
-      font-size: 36px;
-      font-weight: 400;
-      margin: 0;
-    }
-
-    .at-pwd-form {
-      margin-top: 30px;
-    }
-
-    .at-input {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-
-      label {
-        font-size: 16px;
-        line-height: 1.5;
-      }
-
-      input {
-        margin-top: 5px;
-        padding: 10px 10px;
-        border: none;
-        border-radius: 5px;
-      }
-    }
-
-    .at-btn {
-      background: $color-primary;
-      color: $color-light;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      margin-top: 20px;
-    }
-
-    .at-signup-link {
-      margin-top: 40px;
-    }
-
-    .at-signin-link {
-      margin-top: 40px;
-    }
-  }
 }
 
 .formContainer {
   display: flex;
-  align-items: center;
   padding: 40px;
   flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
 
   @media (min-width: 768px) {
     padding: 100px;
   }
 }
 
+.formTitle {
+  font-size: 36px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.form {
+  margin-top: 50px;
+
+  & > * + * {
+    margin-top: 20px;
+  }
+}
+
+.formInput {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  input {
+    margin-top: 5px;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+  }
+}
+
+.formSubmit {
+  background: $color-primary;
+  color: $color-light;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: none;
+  transition: all 0.3s ease;
+
+  &:hover {
+    cursor: pointer;
+    background: lighten($color-primary, 10);
+  }
+}
+
+.formFooter {
+  margin-top: 40px;
+}
+
 .artwork {
   display: none;
+  animation: fadeIn 1s ease-out;
 
   @media (min-width: 1024px) {
     display: block;
     height: 700px;
+    min-width: 466px; // Avoid FOUC
   }
 }
 
@@ -126,12 +128,19 @@
   border: 1px rgb(255, 99, 99) solid;
   border-radius: 5px;
   background: rgb(255, 240, 240);
-  margin-top: 30px;
-  margin-bottom: 30px;
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeSlideIn 0.3s ease-out;
 }
 
 @keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeSlideIn {
   0% {
     top: 50px;
     opacity: 0;

@@ -1,10 +1,10 @@
 import HTTPStatus from "http-status";
 import validate from "express-validation";
 import { User } from "./user-model";
-import { RequestWithUser } from "../../types";
+import { Request } from "../../types";
 import { Response } from "express";
 
-export async function signUp(req: RequestWithUser, res: Response) {
+export async function signUp(req: Request, res: Response) {
   try {
     const user = await User.create(req.body);
     return res.status(HTTPStatus.CREATED).json(user.toAuthJSON());
@@ -13,12 +13,12 @@ export async function signUp(req: RequestWithUser, res: Response) {
   }
 }
 
-export function logIn(req: RequestWithUser, res: Response, next) {
+export function logIn(req: Request, res: Response, next) {
   res.status(HTTPStatus.OK).json(req.user.toAuthJSON());
   return next();
 }
 
-export function me(req: RequestWithUser, res: Response, next) {
+export function me(req: Request, res: Response, next) {
   res.status(HTTPStatus.OK).json(req.user.toJSON());
   return next();
 }

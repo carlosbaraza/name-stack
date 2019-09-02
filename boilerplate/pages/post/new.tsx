@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { withApollo } from "../lib/apollo";
-import { Navbar } from "../components/Navbar";
+import { withApollo } from "../../lib/apollo";
+import { Navbar } from "../../components/Navbar";
 
 interface props {
   userAgent: string;

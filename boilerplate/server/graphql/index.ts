@@ -1,11 +1,10 @@
 import HTTPStatus from "http-status";
-import { RequestWithUser } from "./../types";
-import { ApolloServer, gql, ApolloServerExpressConfig } from "apollo-server-express";
-import { ContextFunction } from "apollo-server-core";
+import { Request } from "../types";
+import { ApolloServer } from "apollo-server-express";
 import { Express } from "express";
-import { typeDefs, resolvers } from "./schema";
-import { authJwt } from "../auth/auth-jwt";
-import { authLocal } from "../auth/auth-local";
+import { typeDefs } from "./schema";
+import { resolvers } from "./resolvers";
+import { verifySessionNoErrorHandler } from "../firebase";
 
 const server = new ApolloServer({
   typeDefs,
@@ -16,27 +15,31 @@ const server = new ApolloServer({
     }
   },
   context: context => {
-    const req = context.req as RequestWithUser;
-    const { user } = req;
-    return { user };
+    const req = context.req as Request;
+    const { claims } = req;
+    return { claims };
   }
 });
 
 export function applyGraphQLMiddleware(app: Express) {
   const path = "/api/graphql";
 
-  app.use(path, (req, res, next) => {
+  app.use(path, async (req: Request, res, next) => {
     // Allow GET (Playground)
     if (req.method === "GET") {
       return next();
     }
+
     // Authenticate other GraphQL queries
     if (req.headers.authorization) {
-      return authJwt(req, res, next);
-    } else if (req.user) {
-      return next();
+      // TODO: Add middleware to authorize Firebase JWT Bearer tokens
+      // return authJwt(req, res, next);
     } else {
-      return res.status(HTTPStatus.UNAUTHORIZED).send();
+      try {
+        await verifySessionNoErrorHandler(req, res, next);
+      } catch (e) {
+        res.status(HTTPStatus.UNAUTHORIZED).json({ message: "Not authorized" });
+      }
     }
   });
 
