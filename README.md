@@ -8,6 +8,8 @@ Medium post.
 
 # Getting started
 
+## Clone boilerplate
+
 Clone the [boilerplate](./boilerplate) folter in this repository and then run:
 
 ## Install dependencies
@@ -24,6 +26,23 @@ docker-compose up
 
 # Start Next server
 npm run dev
+```
+
+## Set up Firebase
+
+This project uses Firebase to simplify the user management.
+
+1. Create an account following the official guides.
+2. Create an `.env` file:
+
+```sh
+# Get Admin SDK private key.
+FIREBASE_PROJECT_ID=project
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----BLABLABLAH-----END PRIVATE KEY-----\n"
+FIREBASE_CLIENT_EMAIL=firebase-adminsdk-blablah@project.iam.gserviceaccount.com
+
+# JSON.stringify(firebaseConfig)
+FIREBASE_CLIENTSIDE_CONFIG=firebaseConfigJSON
 ```
 
 # Ideal stack for web development speed (without compromises)
@@ -57,6 +76,7 @@ After some research and experimentation, I have settled with:
 - [MongoDB](https://www.mongodb.com/): For the data layer, I chose [MongoDB](https://www.mongodb.com/) (NoSQL) because it is easier to get started with, at the expense of potentially having to deal with some data inconsistencies if the application survives long enough (migrations, associative tables, strict schema, etc). [Mongoose](https://mongoosejs.com/) library is quite powerful and allows some great schema configurations. An alternative was using an ORM like Prisma, but I decided to stick with [MongoDB](https://www.mongodb.com/) for being more mature and flexible than these new ORMs.
 - [Express](https://expressjs.com/): NextJS gives you the possibility to use a custom [Express](https://expressjs.com/) server ([check out the example](https://github.com/zeit/next.js/tree/canary/examples/custom-server-express)). You can then expose an API along with the web application routes, directly using the one [express](https://expressjs.com/) server. I exposed a REST API for the user management with [PassportJS](http://www.passportjs.org/), a GraphQL API endpoint, and the standard Next routes.
 - [TypeScript](https://www.typescriptlang.org/): It may slow you down a bit, but it is worth the extra safety it provides.
+- [Firebase](https://firebase.google.com/): Only for User Management.
 - Deployment: [Dokku](https://github.com/dokku/dokku). Open-source Docker-based PaaS. For just \$10 you can set up your own Heroku-like PaaS in a droplet, and incubate all your side projects until one generates any money. Then you could transition to a more scalable solution if you need to.
 - Headless CMS: This is an improvement I am considering if I ever have to create a project that needs to be maintained by non-technical people. [Strapi](https://strapi.io/) is a great open-source headless CMS, and it could accelerate development because you would spend less time writing APIs and CMS like functionality into your app.
 
@@ -82,8 +102,7 @@ point on implementing such thing in NextJS.
 ## What could be improved?
 
 - Simple getting started tools. My reference is Meteor, because I think they did a great job decrease time to launch and prototyping. However, at the time of writing the NAME stack requires quite a bit of configuration.
-- User and session management. Having to deal with passwords and sessions seems like a hurdle that no small company should have to deal with. It is a time-wasting and error-prone repetitive task that every company needs. [PassportJS](http://www.passportjs.org/) is fine, but I miss a stronger integration like the Accounts UI from Meteor. The project [AccountsJS](https://github.com/accounts-js/accounts) looks promising though, but it still requires some work. A service like Auth0 could be fine, but it becomes expensive quite quickly, and I am cheap while my projects generate \$0.
-- Glue and more glue: NextJS + Apollo + Mongo + [Express](https://expressjs.com/) + GraphQL + [PassportJS](http://www.passportjs.org/). It is quite annoying and frustrating spending time gluing tools together. But the worst is to realize that after an entire day of work, you didn't get any actual business logic done, only glued pieces together that you wished were glued out of the box for you. It has another important downside, and it is that it increases the moving parts. The more moving parts, the easier is that it breaks and the harder to maintain for a small company. Again, I'd prefer a unified solution like Meteor.
+- Glue and more glue: NextJS + Apollo + Mongo + [Express](https://expressjs.com/) + GraphQL. It is quite annoying and frustrating spending time gluing tools together. But the worst is to realize that after an entire day of work, you didn't get any actual business logic done, only glued pieces together that you wished were glued out of the box for you. It has another important downside, and it is that it increases the moving parts. The more moving parts, the easier is that it breaks and the harder to maintain for a small company. Again, I'd prefer a unified solution like Meteor.
 
 ## But, is there anything good?
 
