@@ -9,7 +9,7 @@ import { TEMPORARY_REDIRECT } from "http-status";
 import "./database";
 import { sessionRoutes } from "./api/session";
 import { applyGraphQLMiddleware } from "./graphql";
-import { verifySession } from "./firebase";
+import { verifySessionCookie } from "./firebase";
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
@@ -44,7 +44,7 @@ app.prepare().then(() => {
   server.get("/static/*", nextMiddleware);
 
   // Authenticated pages
-  server.get("*", verifySession, nextMiddleware);
+  server.get("*", verifySessionCookie, nextMiddleware);
 
   // Start server
   server.listen(port, err => {

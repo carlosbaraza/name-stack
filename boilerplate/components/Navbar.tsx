@@ -3,6 +3,8 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import firebase from "firebase/app";
 
+import styles from "./Navbar.scss";
+
 export const USER_QUERY = gql`
   query currentUser {
     currentUser {
@@ -21,17 +23,13 @@ export function Navbar() {
   });
 
   return (
-    <div>
-      <span className="logo">Wisertag</span>
-      <span>{loading ? "Loading..." : data.currentUser.email}</span>
+    <div className={styles.container}>
+      <span className={styles.logo}>Wisertag</span>
 
-      <style jsx>
-        {`
-          .logo {
-            color: red;
-          }
-        `}
-      </style>
+      <div className={styles.menu}>
+        <span>{loading ? "Loading..." : data.currentUser.email}</span>
+        <a href="/logout">Log out</a>
+      </div>
     </div>
   );
 }

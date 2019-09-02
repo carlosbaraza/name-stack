@@ -4,7 +4,7 @@ import { ApolloServer } from "apollo-server-express";
 import { Express } from "express";
 import { typeDefs } from "./schema";
 import { resolvers } from "./resolvers";
-import { verifySessionNoErrorHandler } from "../firebase";
+import { verifySessionCookieNoErrorHandler, verifySession } from "../firebase";
 
 const server = new ApolloServer({
   typeDefs,
@@ -31,15 +31,17 @@ export function applyGraphQLMiddleware(app: Express) {
     }
 
     // Authenticate other GraphQL queries
-    if (req.headers.authorization) {
-      // TODO: Add middleware to authorize Firebase JWT Bearer tokens
-      // return authJwt(req, res, next);
-    } else {
-      try {
-        await verifySessionNoErrorHandler(req, res, next);
-      } catch (e) {
-        res.status(HTTPStatus.UNAUTHORIZED).json({ message: "Not authorized" });
+    try {
+      if (req.headers.authorization) {
+        // Authorization Bearer token
+        const session = req.headers.authorization.replace("Bearer ", "");
+        await verifySession(session, req, res, next);
+      } else {
+        // Cookies: Used in Client
+        await verifySessionCookieNoErrorHandler(req, res, next);
       }
+    } catch (e) {
+      res.status(HTTPStatus.UNAUTHORIZED).json({ message: "Not authorized" });
     }
   });
 
