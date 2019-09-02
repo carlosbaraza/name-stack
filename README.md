@@ -45,7 +45,7 @@ docker-compose up
 npm run dev
 ```
 
-# Ideal stack for web development speed (without compromises)
+# Ideal stack for web development speed
 
 I have set on the quest of finding the current best web stack (as of mid-2019). This is just my humble opinion given my current knowledge of the field.
 
